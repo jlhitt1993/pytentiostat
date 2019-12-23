@@ -23,6 +23,7 @@ def plot_initializer(config_data):
     axes = plt.gca()
     axes.set_xlim(-2.5, 2.5)
     axes.set_ylim(-2.5, 2.5)
+    plt.autoscale(enable=True, axis='y')
     plt.ion()
 
     # This is just for testing
