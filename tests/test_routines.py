@@ -4,14 +4,22 @@ import pytest
 from pytentiostat.routines import _load_arduino, _initialize_arduino
 from pytentiostat.config_reader import get_rest
 
+
 class Dummy_port:
     def __init__(self):
         self.description = "default"
         self.device = "com"
 
+
 class Dummy_arduino:
     def __init__(self):
         self.name = None
+
+
+class Dummy_board:
+    @staticmethod
+    def get_pin(self, abc):
+        return abc
 
 def test_load_arduino():
     good_port = Dummy_port()
@@ -47,3 +55,11 @@ def test_initialize_arduino():
     ):
         ard = _initialize_arduino("good_port")
         assert ard.name == "good_arduino"
+
+
+def test_startup_routine():
+    board = Dummy_port()
+
+    a0 = board.get_pin("a:0:i")
+    a2 = board.get_pin("a:2:i")
+    d9 = board.get_pin("d:9:p")
