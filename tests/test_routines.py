@@ -16,10 +16,9 @@ class Dummy_arduino:
         self.name = None
 
 
-class Dummy_board:
-    @staticmethod
-    def get_pin(self, abc):
-        return abc
+class Pin:
+    def __init__(self):
+        self.pin = "default"
 
 
 def test_load_arduino():
@@ -59,13 +58,22 @@ def test_initialize_arduino():
 
 
 def test_startup_routine():
-    board = Dummy_port()
-    with pytest.raises(SystemExit):
-        startup_routine()
+    good_com = "good com"
+    good_board = "good board"
+    good_pin = "good_pin"
+    pin_a0 = Pin()
+    pin_a2 = Pin()
+    pin_d9 = Pin()
+    with mock.patch("pytentiostat.routines.Arduino.get_pin", returnvalue=[good_pin],):
+        with mock.patch("pytentiostat.routines._initialize_arduino", returnvalue=[good_board],):
+            with mock.patch("pytentiostat.routines._load_arduino", returnvalue=[good_com],):
+                with mock.patch("builtins.input", returnvalue=[None]):
+                    com, board, pin_a0.pin, pin_a2.pin, pin_d9.pin = startup_routine()
 
-    a0 = Dummy_board.get_pin(board, "a:0:i")
-    assert a0 == "a:0:i"
-    a2 = Dummy_board.get_pin(board, "a:2:i")
-    assert a2 == "a:2:i"
-    d9 = Dummy_board.get_pin(board, "d:9:p")
-    assert d9 == "d:9:p"
+    # with pytest.raises(SystemExit):
+    #    startup_routine()
+    assert com == "good com"
+    assert board == "good board"
+    assert pin_a0.pin == "good pin"
+    assert pin_a2.pin == "good pin"
+    assert pin_d9.pin == "good pin"
