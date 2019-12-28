@@ -1,7 +1,7 @@
 import mock
 import pytest
 
-from pytentiostat.routines import _load_arduino, _initialize_arduino
+from pytentiostat.routines import _load_arduino, _initialize_arduino, startup_routine
 from pytentiostat.config_reader import get_rest
 
 
@@ -20,6 +20,7 @@ class Dummy_board:
     @staticmethod
     def get_pin(self, abc):
         return abc
+
 
 def test_load_arduino():
     good_port = Dummy_port()
@@ -59,7 +60,12 @@ def test_initialize_arduino():
 
 def test_startup_routine():
     board = Dummy_port()
+    with pytest.raises(SystemExit):
+        startup_routine()
 
-    a0 = board.get_pin("a:0:i")
-    a2 = board.get_pin("a:2:i")
-    d9 = board.get_pin("d:9:p")
+    a0 = Dummy_board.get_pin(board, "a:0:i")
+    assert a0 == "a:0:i"
+    a2 = Dummy_board.get_pin(board, "a:2:i")
+    assert a2 == "a:2:i"
+    d9 = Dummy_board.get_pin(board, "d:9:p")
+    assert d9 == "d:9:p"
