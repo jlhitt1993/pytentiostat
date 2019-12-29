@@ -22,9 +22,16 @@ class Pin:
         self.pin = "default"
 
 
-class Dummy_board(unittest.TestCase):
-    def test_dummy_board(self, Board):
-        self.assertIsInstance(Board, Arduino)
+class Dummy_board():
+    def test_dummy_board(self):
+        da = Dummy_arduino
+        da.name = "good_arduino"
+        good_port = Dummy_port()
+        good_port.description = "Arduino Uno"
+        good_port.device = "good com"
+        with mock.patch("pytentiostat.routines.Arduino", returnvalue=da,):
+            board = _initialize_arduino("good_port")
+        assert isinstance(board, Arduino)
 
 
 def test_load_arduino():
