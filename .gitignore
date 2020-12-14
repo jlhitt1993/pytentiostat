@@ -105,3 +105,6 @@ venv.bak/
 
 #OS files
 .idea/*
+
+# Rever
+rever/
